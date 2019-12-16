@@ -89,7 +89,7 @@ void DoubleLinckedList<T>::addLast(T data)
 {
     if (this->isEmpty())
     {
-        this->add_first(data);
+        this->addFirst(data);
     }
     else
     {
@@ -109,8 +109,8 @@ void DoubleLinckedList<T>::addAt(T dato, int index)
 {
     if (index >= 0 && index <= this->size)
     {
-        if (index == 0) { this->add_first(dato); return; }
-        if (index == this->size) { this->add_last(dato); return; }
+        if (index == 0) { this->addFirst(dato); return; }
+        if (index == this->size) { this->addLast(dato); return; }
         Nodo* aux = this->first;
         int x = 0;
         while (aux != 0)
