@@ -2,10 +2,10 @@
 #define BINARITREE_H_INCLUDED
 
 #include <iostream>
+#include "../Obj/Playlist.h"
 
 using namespace std;
 
-template<class T>
 class BinariTree
 {
     class Nodo {
@@ -17,14 +17,14 @@ class BinariTree
         }
 
         Nodo* getLeft() { return left; }
-        nodo* getRight() { return right; }
+        Nodo* getRight() { return right; }
         void setLeft(Nodo* n) { left = n; }
         void setRight(Nodo* n) { right = n; }
         T getDato() { return dato; }
     private:
         Nodo* left;
         Nodo* right
-        T dato;
+        Playlist* dato;
     };
 public:
     ListaDoble()
@@ -33,16 +33,14 @@ public:
     }
 
     void add(T data);
-    void removeAt(int index);
+    void addR(T data, Nodo* aux)
     string graph();
-    string getData();
     T getElement(string name);
 
 
 private:
-    bool isEmpty() { return size == 0; }
-    int size;
-    Nodo* raiz;
+    bool isEmpty() { return root == 0; }
+    Nodo* root;
 };
 
 
@@ -50,24 +48,26 @@ private:
 //------------------------------------------------- Metodo addAt --------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
 template<class T>
-void BinariTree<T>::addFirst(T data)
+void BinariTree<T>::add(T data)
 {
     Nodo* n = new Nodo(data);
     if (this->isEmpty())
     {
-        this->first = n;
-        this->last = n;
-        this->size++;
+        this->root = n;
     }
     else
     {
-        n->setNext(this->first);
-        this->first->setBefore(n);
-        this->first = n;
-        this->size++;
+        
     }
 }
-
+//-----------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------- Metodo addAt --------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+template<class T>
+void BinariTree<T>::addR(T data, Nodo* aux)
+{
+    if(aux->getDato)
+}
 
 //-----------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
