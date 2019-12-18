@@ -1,7 +1,8 @@
-#ifndef CIRCULARDOUBLELINCKEDLIST_H_INCLUDED
-#define CIRCULARDOUBLELINCKEDLIST_H_INCLUDED
 
-#include "../obj/Objects.h"
+
+#include "../obj/Song.h"
+
+using namespace std;
 
 class CircularDoubleLinckedList
 {
@@ -50,8 +51,8 @@ public:
     void addFirst(Song *data);
     void addLast(Song *data);
     void addAt(Song *data, int index);
-    void add(Song *data);
     Song getElementAt(int index);
+    string graph();
 
 
 
@@ -161,5 +162,3 @@ Song CircularDoubleLinckedList::getElementAt(int index)
 
 
 
-
-#endif // DOUBLELINCKEDLIST_H_INCLUDED

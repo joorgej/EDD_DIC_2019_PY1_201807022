@@ -1,13 +1,11 @@
-#ifndef LINCKEDLIST_H_INCLUDED
-#define LINCKEDLIST_H_INCLUDED
+#pragma once
+#include "../Obj/Song.h"
 
-
-template<class T>
 class LinckedList
 {
     class Nodo {
     public:
-        Nodo(T x)
+        Nodo(Song* x)
         {
             next = 0;
             dato = x;
@@ -19,13 +17,21 @@ class LinckedList
 
         Nodo* getNext() { return next; }
         void setNext(Nodo* n) { next = n; }
-        T getDato() { return dato; }
+        Song *getDato() { return dato; }
     private:
         Nodo* next;
-        T dato;
+        Song* dato;
     };
+
+private:
+    bool isEmpty() { return size == 0; }
+    int size;
+    Nodo* first;
+    Nodo* last;
+
+
 public:
-    ListaDoble()
+    LinckedList()
     {
         first = 0;
         last = 0;
@@ -33,26 +39,118 @@ public:
     }
 
     int getSize() { return size; }
-    void addFirst(T data);
-    void addLast(T data);
-    void addAt(T data, int index);
-    void removeAt(int index);
-    void add(T data);
-    T getElementAt(int index);
+    
+   //-----------------------------------------------------------------------------------------------------------------------
+   //------------------------------------------------- Metodo addFirst -----------------------------------------------------
+   //-----------------------------------------------------------------------------------------------------------------------  
+    void addFirst(Song* data)
+    {
+        Nodo* n = new Nodo(data);
+        if (this->isEmpty())
+        {
+            this->first = n;
+            this->last = n;
+            this->size++;
+        }
+        else
+        {
+            n->setNext(this->first);
+            this->first = n;
+            this->size++;
+        }
+    }
+    
+   //-----------------------------------------------------------------------------------------------------------------------
+   //------------------------------------------------- Metodo addLast ------------------------------------------------------
+   //-----------------------------------------------------------------------------------------------------------------------   
+    void addLast(Song* data)
+    {
+        if (this->isEmpty())
+        {
+            this->addFirst(data);
+        }
+        else
+        {
+            Nodo* n = new Nodo(data);
+            this->last->setNext(n);
+            this->last = n;
+            this->size++;
+        }
+    }
+    
+   //-----------------------------------------------------------------------------------------------------------------------
+   //------------------------------------------------- Metodo addAt --------------------------------------------------------
+   //-----------------------------------------------------------------------------------------------------------------------   
+    void addAt(Song* data, int index)
+    {
+        if (index >= 0 && index <= this->size)
+        {
+            if (index == 0) { this->addFirst(data);  }
+            if (index == this->size) { this->addLast(data);  }
+            else 
+            {
+                Nodo* aux = this->first;
+                Nodo* aux2 = aux->getNext();
+                int x = 1;
+                while (aux2 != 0)
+                {
+                    if (x == index) { break; }
+                    aux2 = aux2->getNext();
+                    aux = aux->getNext();
+                    x++;
+                }
+                Nodo* n = new Nodo(data);
+                aux->setNext(n);
+                n->setNext(aux2);
+                this->size++;
+            }
+            
+        }
+    }
+        
+    //-----------------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------- Metodo getElementAt -------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------   
+    Song *getElementAt(int index)
+    {
+        if (index >= 0 && index < this->size)
+        {
+            Nodo* iterador = this->first;
+            int x = 0;
+            while (iterador != 0)
+            {
+                if (index == x) { return iterador->getDato(); }
+                iterador = iterador->getNext();
+                x++;
+            }
+        }
+        return 0;
+    }
 
+    //-----------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------- Metodo getElementWith -------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------  
+    Song* getElementWith(string name_)
+    {
 
-private:
-    bool isEmpty() { return size == 0; }
-    int size;
-    Nodo* first;
+        Nodo* aux = this->first;
+        int x = 0;
+        while (aux != 0)
+        {
+            if (name_.compare(aux->getDato()->getName())==0) { return aux->getDato(); }
+            aux = aux->getNext();
+            x++;
+        }
+        return 0;
+    }
+
 };
 
-
+/*
 //-----------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------- Metodo addAt --------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
-template<class T>
-void LinckedList<T>::addFirst(T data)
+void LinckedList::addFirst(Song* data)
 {
     Nodo* n = new Nodo(data);
     if (this->isEmpty())
@@ -73,8 +171,7 @@ void LinckedList<T>::addFirst(T data)
 //-----------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------- Metodo addLast ------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
-template<class T>
-void LinckedList<T>::addLast(T data)
+void LinckedList::addLast(Song* data)
 {
     if (this->isEmpty())
     {
@@ -93,8 +190,7 @@ void LinckedList<T>::addLast(T data)
 //-----------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------- Metodo addAt --------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
-template<class T>
-void LinckedList<T>::addAt(T dato, int index)
+void LinckedList::addAt(Song* dato, int index)
 {
     if (index >= 0 && index <= this->size)
     {
@@ -121,8 +217,7 @@ void LinckedList<T>::addAt(T dato, int index)
 //-----------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------- Metodo getElementAt -------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
-template<class T>
-T LinckedList<T>::getElementAt(int index)
+Song LinckedList::getElementAt(int index)
 {
     if (index >= 0 && index < this->size)
     {
@@ -141,8 +236,7 @@ T LinckedList<T>::getElementAt(int index)
 //-----------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------- Metodo removeAt -----------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
-template<class T>
-void LinckedList<T>::removeAt(int index)
+void LinckedList::removeAt(int index)
 {
     if (index >= 0 && index < size) 						                
     {
@@ -179,7 +273,4 @@ void LinckedList<T>::removeAt(int index)
 //-----------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
 
-
-
-
-#endif // LINCKEDLIST_H_INCLUDED
+*/

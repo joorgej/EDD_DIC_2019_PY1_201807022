@@ -1,15 +1,14 @@
-#ifndef DOUBLELINCKEDLIST_H_INCLUDED
-#define DOUBLELINCKEDLIST_H_INCLUDED
+#pragma once
+#include <iostream>
+#include "../Obj/Artist.h"
 
-
-template<class T>
 class DoubleLinckedList
 {
 
 
     class Nodo {
     public:
-        Nodo(T x)
+        Nodo(Artist* x)
         {
             next = 0;
             before = 0;
@@ -24,11 +23,11 @@ class DoubleLinckedList
         Nodo* getBefore() { return before; }
         void setNext(Nodo* n) { next = n; }
         void setBefore(Nodo* n) { before = n; }
-        T getDato() { return dato; }
+        Artist* getDato() { return dato; }
     private:
         Nodo* next;
         Nodo* before;
-        T dato;
+        Artist* dato;
     };
 
 
@@ -43,12 +42,12 @@ public:
     }
 
     int getSize() { return size; }
-    void addFirst(T data);
-    void addLast(T data);
-    void addAt(T data, int index);
+    void addFirst(Artist* data);
+    void addLast(Artist* data);
+    void addAt(Artist* data, int index);
     void removeAt(int index);
-    void add(T data);
-    T getElementAt(int index);
+    void add(Artist* data);
+    Artist* getElementAt(int index);
 
 
 private:
@@ -62,8 +61,7 @@ private:
 //-----------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------- Metodo addAt --------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
-template<class T>
-void DoubleLinckedList<T>::addFirst(T data)
+void DoubleLinckedList::addFirst(Artist* data)
 {
     Nodo* n = new Nodo(data);
     if (this->isEmpty())
@@ -84,8 +82,7 @@ void DoubleLinckedList<T>::addFirst(T data)
 //-----------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------- Metodo addLast ------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
-template<class T>
-void DoubleLinckedList<T>::addLast(T data)
+void DoubleLinckedList::addLast(Artist* data)
 {
     if (this->isEmpty())
     {
@@ -104,8 +101,7 @@ void DoubleLinckedList<T>::addLast(T data)
 //-----------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------- Metodo addAt --------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
-template<class T>
-void DoubleLinckedList<T>::addAt(T dato, int index)
+void DoubleLinckedList::addAt(Artist* dato, int index)
 {
     if (index >= 0 && index <= this->size)
     {
@@ -132,8 +128,7 @@ void DoubleLinckedList<T>::addAt(T dato, int index)
 //-----------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------- Metodo getElementAt -------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
-template<class T>
-T DoubleLinckedList<T>::getElementAt(int index)
+Artist* DoubleLinckedList::getElementAt(int index)
 {
     if (index >= 0 && index < this->size)
     {
@@ -150,48 +145,8 @@ T DoubleLinckedList<T>::getElementAt(int index)
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
-//------------------------------------------------- Metodo removeAt -----------------------------------------------------
-//-----------------------------------------------------------------------------------------------------------------------
-template<class T>
-void DoubleLinckedList<T>::removeAt(int index)
-{
-    if (index >= 0 && index < size)
-    {
-        if (index == 0)
-        {
-            Nodo* aux = first;
-            first = first->getNext();
-            first->setBefore(0);
-            aux->setNext(0);
-            aux->~Nodo();
-        }
-        else if (index == size - 1)
-        {
-            Nodo* aux = last;
-            last = last->getBefore();
-            last->setNext(0);
-            aux->setBefore(0);
-            aux->~Nodo();
-        }
-        else
-        {
-            Nodo* aux = this->first;
-            for (int i = 0; i < index; i++) { aux = aux->getNext(); }
-            aux->getBefore()->setNext(aux->getNext());
-            aux->getNext()->setBefore(aux->getBefore());
-            aux->setBefore(0);
-            aux->setNext(0);
-            aux->~Nodo();
-        }
-        size--;
-    }
-}
-//-----------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
 
 
-
-
-#endif // DOUBLELINCKEDLIST_H_INCLUDED
 

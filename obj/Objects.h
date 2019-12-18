@@ -51,16 +51,16 @@ class Album
 private:
 	string name;
 	int rate;
-	LinckedList<Song> *songs;
+	//LinckedList<Song> *songs;
 
 public:
-	Album(string name_): name(name_),rate(0),songs(new LinckedList<Song>){}
+	Album(string name_): name(name_),rate(0)/*,songs(new LinckedList<Song>)*/{}
 	void setName(string name_) { name = name_; }
 	void setRate(int rate_) { rate = rate_;}
-	void addSong(Song data) { songs->add(data); }
+	//void addSong(Song data) { songs->add(data); }
 	string getName() { return name; }
 	int getRate() { return rate; }
-	LinckedList<Song>* getSongList() { return songs; }
+	//LinckedList<Song>* getSongList() { return songs; }
 
 
 };
@@ -78,6 +78,7 @@ private:
 	bool isOn;
 
 public:
+	Song(){}
 	Song(string name_, string file_, int rate_):name(name_), file(file_), rate(rate_), isOn(0){}
 	void setName(string name_) { name = name_; }
 	void setFile(string file_) { file = file_; }
@@ -86,5 +87,6 @@ public:
 	string getName() { return name; }
 	string getFIle() { return file; }
 	int getRate() { return rate; }
+	string getName() { return name; }
 	bool isOn() { return isOn; }
 };
