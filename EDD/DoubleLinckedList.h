@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <string.h>
 #include "../Obj/Artist.h"
 
 class DoubleLinckedList
@@ -45,9 +46,9 @@ public:
     void addFirst(Artist* data);
     void addLast(Artist* data);
     void addAt(Artist* data, int index);
-    void removeAt(int index);
     void add(Artist* data);
     Artist* getElementAt(int index);
+    void getArtists();
 
 
 private:
@@ -142,6 +143,50 @@ Artist* DoubleLinckedList::getElementAt(int index)
         }
     }
     return 0;
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------- Metodo getElementAt -------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+void DoubleLinckedList::add(Artist* data)
+{
+    if (isEmpty()) 
+    {
+        addFirst(data);
+    }
+    else
+    {
+        int contador = 0;
+        Nodo* aux = first;
+        while (aux != 0) 
+        {
+            if (_strcmpi(data->getName().c_str(), aux->getDato()->getName().c_str()) < 0)
+            {
+                addAt(data,contador);
+                break;
+            }
+            contador++;
+            aux = aux->getNext();
+        }
+        if (contador==getSize()) 
+        {
+            addLast(data);
+        }
+        
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------- Metodo getArtists ---------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+void DoubleLinckedList::getArtists()
+{
+    Nodo* aux = first;
+    int contador = 0;
+    while (aux != 0) {
+        contador++;
+        cout << contador << ")  " << aux->getDato()->getName()<<endl;
+        aux = aux->getNext();
+    }
 }
 
 //-----------------------------------------------------------------------------------------------------------------------

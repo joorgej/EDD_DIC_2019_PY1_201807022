@@ -19,7 +19,7 @@ private:
 
 
 public:
-	Nodo(Album* data_, int x_, int y_) :data(data_), left(0), right(0), top(0), buttom(0), next(0), before(0), xCord(x_), yCord(y_) {}
+	Nodo(Album* data_, int x_, int y_) :data(data_), left(NULL), right(NULL), top(NULL), buttom(NULL), next(NULL), before(NULL), xCord(x_), yCord(y_) {}
 
 	void setLeft(Nodo* n) { left = n; }
 	void setRight(Nodo* n) { right = n; }
@@ -52,7 +52,7 @@ private:
 	int namex;
 
 public:
-	HeaderX(int name_) :namex(name_), nextx(0), column(0) {}
+	HeaderX(int name_) :namex(name_), nextx(NULL), column(NULL), beforex(NULL) {}
 
 	void setNext(HeaderX* n) { nextx = n; }
 	void setBefore(HeaderX* n) { beforex = n; }
@@ -75,7 +75,7 @@ private:
 	int index;
 
 public:
-	HeaderY(string name_) :namey(name_), nexty(0), row(0), index(1) { setIndex(); }
+	HeaderY(string name_) :namey(name_), nexty(NULL), row(NULL), index(NULL), beforey(NULL) { setIndex(); }
 
 	void setNext(HeaderY* n) { nexty = n; }
 	void setBefore(HeaderY* n) { beforey = n; }
@@ -118,9 +118,7 @@ public:
 //------------------------------------------------- Constructor ---------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
 
-	DisperseCube():x(0),y(0){}
-
-
+	DisperseCube():x(NULL),y(NULL){}
 
 //-----------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------- Metodo getAlbum -----------------------------------------------------
@@ -131,7 +129,7 @@ public:
 		bool flag1 = 0;
 		bool flag2 = 0;
 		HeaderX* auxX = x;
-		while (auxX != 0)
+		while (auxX != NULL)
 		{
 			if (auxX->getName() == x_)
 			{
@@ -141,9 +139,9 @@ public:
 		}
 
 		HeaderY* auxY = y;
-		while (auxY != 0)
+		while (auxY != NULL)
 		{
-			if (auxY->getName().compare(y_))
+			if (auxY->getName().compare(y_)==0)
 			{
 				break;
 			}
@@ -152,7 +150,7 @@ public:
 
 		Nodo* aux = auxX->getColumn();
 
-		while (aux->getButtom() != 0)
+		while (aux->getButtom() != NULL)
 		{
 			if (aux->getAlbum()->getName().compare(name_))
 			{
@@ -164,7 +162,7 @@ public:
 
 		aux = auxY->getRow();
 
-		while (aux->getRight() != 0)
+		while (aux->getRight() != NULL)
 		{
 			if (aux->getAlbum()->getName().compare(name_))
 			{
@@ -182,11 +180,59 @@ public:
 //-----------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------ Metodo getAlbums -----------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
-	string getAlbums() 
+	void getAlbums() 
 	{
+		string out = "";
+		int contador = 0;
+		HeaderX* head = x;
+		while (head != NULL) 
+		{
+			Nodo* aux = head->getColumn();
+			while (aux != NULL) 
+			{
+				Nodo* aux2 = aux;
+				while (aux2 != NULL)
+				{
+					contador++;
+					cout << contador << ")   " << aux2->getAlbum()->getName() <<endl;
+					aux2 = aux2->getNext();
+				}
+				aux = aux->getButtom();
+			}
+			head = head->getNext();
+		}
 
+	}
 
-
+//-----------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------ Metodo getAlbum -----------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+	Album* getAlbum(int index)
+	{
+		int contador = 0;
+		HeaderX* head = x;
+		Nodo* aux = 0;
+		Nodo* aux2 = 0;
+		while (head != NULL)
+		{
+			aux = head->getColumn();
+			while (aux != NULL)
+			{
+				aux2 = aux;
+				do
+				{
+					contador++;
+					if (contador > index-1) 
+					{
+						return aux2->getAlbum();
+					}
+					aux2 = aux2->getNext();
+				} while (aux2 != NULL);
+				aux = aux->getButtom();
+			}
+			head = head->getNext();
+		}
+		
 	}
 
 //-----------------------------------------------------------------------------------------------------------------------
@@ -195,7 +241,7 @@ public:
 	bool existX(int name)
 	{
 		HeaderX* aux = x;
-		while (aux != 0)
+		while (aux != NULL)
 		{
 			if (aux->getName() == name)
 			{
@@ -213,9 +259,9 @@ public:
 	bool existY(string name)
 	{
 		HeaderY* aux = y;
-		while (aux != 0)
+		while (aux != NULL)
 		{
-			if (aux->getName().compare(name))
+			if (aux->getName().compare(name)==0)
 			{
 				return 1;
 			}
@@ -232,14 +278,20 @@ public:
 	{
 		HeaderY* y_ = new HeaderY(name);
 		int indexY = y_->getIndex();
-		if (y == 0)
+		if (y == NULL)
 		{
+			y = y_;
+		}
+		else if (indexY < y->getIndex())
+		{
+			y->setBefore(y_);
+			y_->setNext(y);
 			y = y_;
 		}
 		else
 		{
 			HeaderY* aux = y;
-			while (aux->getNext() != 0) {
+			while (aux->getNext() != NULL) {
 				if (indexY > aux->getIndex() && indexY < aux->getNext()->getIndex())
 				{
 					y_->setNext(aux->getNext());
@@ -250,7 +302,7 @@ public:
 				}
 				aux = aux->getNext();
 			}
-			if (aux->getNext() == 0)
+			if (aux->getNext() == NULL)
 			{
 				aux->setNext(y_);
 				y_->setBefore(aux);
@@ -265,7 +317,7 @@ public:
 	void addX(int name)
 	{
 		HeaderX* x_ = new HeaderX(name);
-		if (x == 0)
+		if (x == NULL)
 		{
 			x = x_;
 		}
@@ -278,7 +330,7 @@ public:
 		else
 		{
 			HeaderX* aux = x;
-			while (aux->getNext() != 0)
+			while (aux->getNext() != NULL)
 			{
 				if (name > aux->getName() && name < aux->getNext()->getName())
 				{
@@ -290,7 +342,7 @@ public:
 				}
 				aux = aux->getNext();
 			}
-			if (aux->getNext() == 0)
+			if (aux->getNext() == NULL)
 			{
 				aux->setNext(x_);
 				x_->setBefore(aux);
@@ -315,14 +367,13 @@ public:
 //-----------------------------------------------------------------------------------------------------------------------
 	void add(string y_, int x_, Album* data_)
 	{
-
+		bool flag = 1;
 		HeaderY* auxY = getNodeY(y_);
 		HeaderX* auxX = getNodeX(x_);
-		Nodo* dato = new Nodo(data_, auxX->getName(), auxY->getIndex());
 		int indexY = auxY->getIndex();
-		cout << auxY->getName() << endl;
+		Nodo* dato = new Nodo(data_, auxX->getName(), indexY);
 
-		if (auxY->getRow() == 0)
+		if (auxY->getRow() == NULL)
 		{
 			auxY->setRow(dato);
 		}
@@ -334,14 +385,20 @@ public:
 				dato->setRight(aux);
 				aux->setLeft(dato);
 				auxY->setRow(dato);
+
 			}
 			else
 			{
-				while (aux->getRight() != 0)
+				do
 				{
-
 					if (aux->getX() == auxX->getName())
 					{
+
+						flag = 0;
+						while (aux->getNext() != NULL)
+						{
+							aux = aux->getNext();
+						}
 						aux->setNext(dato);
 						dato->setBefore(aux);
 						break;
@@ -349,58 +406,63 @@ public:
 					else if (x_ > aux->getX() && x_ < aux->getRight()->getX())
 					{
 						dato->setRight(aux->getRight());
+						dato->setLeft(aux);
 						aux->getRight()->setLeft(dato);
 						aux->setRight(dato);
-						dato->setLeft(aux);
+
 						break;
 					}
-					aux = aux->getNext();
-				}
-				if (aux->getNext() == 0)
+					else
+					{
+						aux = aux->getRight();
+					}
+				} while (aux != NULL);
+				if (aux->getRight() == NULL && flag)
 				{
 					aux->setRight(dato);
 					dato->setLeft(aux);
+
 				}
 			}
 		}
 
-
-		if (auxX->getColumn() == 0)
+		if (flag)
 		{
-			auxX->setColumn(dato);
-		}
-		else
-		{
-			Nodo* aux = auxX->getColumn();
-			if (indexY < aux->getY())
+			if (auxX->getColumn() == NULL)
 			{
-				dato->setButtom(aux);
-				aux->setTop(dato);
 				auxX->setColumn(dato);
 			}
 			else
 			{
-				while (aux->getButtom() != 0)
+				Nodo* aux = auxX->getColumn();
+				if (indexY < aux->getY())
 				{
+					dato->setButtom(aux);
+					aux->setTop(dato);
+					auxX->setColumn(dato);
 
-					if (aux->getY() == auxY->getIndex())
+
+				}
+				else
+				{
+					while (aux->getButtom() != NULL)
 					{
-						break;
+						if (x_ > aux->getY() && x_ < aux->getButtom()->getY())
+						{
+							dato->setButtom(aux->getButtom());
+							aux->getButtom()->setTop(dato);
+							aux->setButtom(dato);
+							dato->setTop(aux);
+
+							break;
+						}
+						aux = aux->getButtom();
 					}
-					else if (x_ > aux->getY() && x_ < aux->getButtom()->getY())
+					if (aux->getButtom() == NULL)
 					{
-						dato->setButtom(aux->getButtom());
-						aux->getButtom()->setTop(dato);
 						aux->setButtom(dato);
 						dato->setTop(aux);
-						break;
 					}
-					aux = aux->getNext();
-				}
-				if (aux->getNext() == 0)
-				{
-					aux->setButtom(dato);
-					dato->setTop(aux);
 				}
 			}
 		}
@@ -412,9 +474,12 @@ public:
 //-----------------------------------------------------------------------------------------------------------------------
 	HeaderX* getNodeX(int name) 
 	{
-		if (existX(name) == 0) { addX(name);}
+		if (!existX(name)) 
+		{ 
+			addX(name);
+		}
 		HeaderX* auxX = x;
-		while (auxX != 0)
+		while (auxX != NULL)
 		{
 			if (auxX->getName() == name)
 			{
@@ -429,12 +494,15 @@ public:
 //-----------------------------------------------------------------------------------------------------------------------
 	HeaderY* getNodeY(string name) 
 	{
-		if (existY(name) == 0) { addY(name); cout << "se creo" << endl;
+		if (!existY(name)) 
+		{ 
+			addY(name); 
+			
 		}
 		HeaderY* auxY = y;
-		while (auxY != 0)
+		while (auxY != NULL)
 		{
-			if (auxY->getName().compare(name))
+			if (auxY->getName().compare(name)==0)
 			{
 				return auxY;
 			}
@@ -444,6 +512,9 @@ public:
 	}
 
 };
+
+
+
 /*
 //-----------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------- Metodo addX ---------------------------------------------------------
