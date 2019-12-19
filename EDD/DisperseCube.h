@@ -75,7 +75,7 @@ private:
 	int index;
 
 public:
-	HeaderY(string name_) :namey(name_), nexty(NULL), row(NULL), index(NULL), beforey(NULL) { setIndex(); }
+	HeaderY(string name_) :namey(name_), nexty(NULL), row(NULL), index(setIndex(name_)), beforey(NULL) { }
 
 	void setNext(HeaderY* n) { nexty = n; }
 	void setBefore(HeaderY* n) { beforey = n; }
@@ -85,20 +85,20 @@ public:
 	HeaderY* getNext() { return nexty; }
 	HeaderY* getBefore() { return beforey; }
 	Nodo* getRow() { return row; }
-	void setIndex()
+	int setIndex(string namey_)
 	{
-		if (namey.compare("Enero") == 0)index = 1;
-		else if (namey.compare("Febrero") == 0)index = 2;
-		else if (namey.compare("Marzo") == 0)index = 3;
-		else if (namey.compare("Abril") == 0)index = 4;
-		else if (namey.compare("Mayo") == 0)index = 5;
-		else if (namey.compare("Junio") == 0)index = 6;
-		else if (namey.compare("Julio") == 0)index = 7;
-		else if (namey.compare("Agosto") == 0)index = 8;
-		else if (namey.compare("Septiembre") == 0)index = 9;
-		else if (namey.compare("Octubre") == 0)index = 10;
-		else if (namey.compare("Noviembre") == 0)index = 11;
-		else if (namey.compare("Diciembre") == 0)index = 12;
+		if (namey_.compare("Enero") == 0)return 1;
+		else if (namey_.compare("Febrero") == 0)return 2;
+		else if (namey_.compare("Marzo") == 0)return 3;
+		else if (namey_.compare("Abril") == 0)return 4;
+		else if (namey_.compare("Mayo") == 0)return 5;
+		else if (namey_.compare("Junio") == 0)return 6;
+		else if (namey_.compare("Julio") == 0)return 7;
+		else if (namey_.compare("Agosto") == 0)return 8;
+		else if (namey_.compare("Septiembre") == 0)return 9;
+		else if (namey_.compare("Octubre") == 0)return 10;
+		else if (namey_.compare("Noviembre") == 0)return 11;
+		else if (namey_.compare("Diciembre") == 0)return 12;
 	}
 
 };
@@ -121,15 +121,33 @@ public:
 	DisperseCube():x(NULL),y(NULL){}
 
 //-----------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------- Metodo parseYIndex -----------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+
+	int parseYIndex(string namey_)
+	{
+		if (namey_.compare("Enero") == 0)return 1;
+		else if (namey_.compare("Febrero") == 0)return 2;
+		else if (namey_.compare("Marzo") == 0)return 3;
+		else if (namey_.compare("Abril") == 0)return 4;
+		else if (namey_.compare("Mayo") == 0)return 5;
+		else if (namey_.compare("Junio") == 0)return 6;
+		else if (namey_.compare("Julio") == 0)return 7;
+		else if (namey_.compare("Agosto") == 0)return 8;
+		else if (namey_.compare("Septiembre") == 0)return 9;
+		else if (namey_.compare("Octubre") == 0)return 10;
+		else if (namey_.compare("Noviembre") == 0)return 11;
+		else if (namey_.compare("Diciembre") == 0)return 12;
+	}
+//-----------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------- Metodo getAlbum -----------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
 	Album* getAlbum(string y_, int x_, string name_)
 	{
-
-		bool flag1 = 0;
-		bool flag2 = 0;
 		HeaderX* auxX = x;
-		while (auxX != NULL)
+		Nodo* aux = 0;
+		int index = parseYIndex(y_);
+		while(auxX != NULL)
 		{
 			if (auxX->getName() == x_)
 			{
@@ -137,44 +155,24 @@ public:
 			}
 			auxX = auxX->getNext();
 		}
+		if (auxX == NULL) {return 0;}
+		else { aux = auxX->getColumn(); }
 
-		HeaderY* auxY = y;
-		while (auxY != NULL)
+		while (aux!= NULL)
 		{
-			if (auxY->getName().compare(y_)==0)
-			{
-				break;
-			}
-			auxY = auxY->getNext();
-		}
-
-		Nodo* aux = auxX->getColumn();
-
-		while (aux->getButtom() != NULL)
-		{
-			if (aux->getAlbum()->getName().compare(name_))
-			{
-				flag1 = 1;
-				break;
+			if (aux->getY() == index) {
+				while (aux != 0)
+				{
+					if (aux->getAlbum()->getName().compare(name_) == 0) 
+					{
+						return aux->getAlbum();
+					}
+					aux = aux->getNext();
+				}
 			}
 			aux = aux->getButtom();
 		}
-
-		aux = auxY->getRow();
-
-		while (aux->getRight() != NULL)
-		{
-			if (aux->getAlbum()->getName().compare(name_))
-			{
-				flag1 = 1;
-				break;
-			}
-			aux = aux->getRight();
-		}
-
-		if (flag1 && flag2) return aux->getAlbum();
-		else return 0;
-
+		return 0;
 	}
 
 //-----------------------------------------------------------------------------------------------------------------------
@@ -356,7 +354,7 @@ public:
 //-----------------------------------------------------------------------------------------------------------------------
 	string graph()
 	{
-
+		
 
 
 	}
