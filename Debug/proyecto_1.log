@@ -1,0 +1,17 @@
+﻿  proyecto_1.cpp
+C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\proyecto_1.cpp(3,34): warning C4081: se esperaba 'newline'; se encontró '.'
+C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\proyecto_1.cpp(43,27): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\proyecto_1.cpp(48,31): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\proyecto_1.cpp(52,35): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\proyecto_1.cpp(57,55): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\proyecto_1.cpp(306,27): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\EDD\CircularDoubleLinckedList.h(156): warning C4715: 'CircularDoubleLinckedList::getElementAt': no todas las rutas de acceso de control devuelven un valor
+C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\EDD\DisperseCube.h(662): warning C4715: 'DisperseCube::getNodeY': no todas las rutas de acceso de control devuelven un valor
+C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\EDD\DisperseCube.h(640): warning C4715: 'DisperseCube::getNodeX': no todas las rutas de acceso de control devuelven un valor
+C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\proyecto_1.cpp(179): warning C4717: 'Menus::bySong': recursiva para todas las rutas de acceso de control; la función provocará el desbordamiento de la pila en tiempo de ejecución
+C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\proyecto_1.cpp(168): warning C4717: 'Menus::byArtist': recursiva para todas las rutas de acceso de control; la función provocará el desbordamiento de la pila en tiempo de ejecución
+C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\EDD\DisperseCube.h(235): warning C4715: 'DisperseCube::getAlbum': no todas las rutas de acceso de control devuelven un valor
+C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\Obj\Playlist.h(38): warning C4715: 'Playlist::getType': no todas las rutas de acceso de control devuelven un valor
+C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\EDD\DisperseCube.h(103): warning C4715: 'HeaderY::setIndex': no todas las rutas de acceso de control devuelven un valor
+C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\EDD\DisperseCube.h(142): warning C4715: 'DisperseCube::parseYIndex': no todas las rutas de acceso de control devuelven un valor
+  proyecto_1.vcxproj -> C:\Users\Jorge\source\repos\proyecto_1\Debug\proyecto_1.exe

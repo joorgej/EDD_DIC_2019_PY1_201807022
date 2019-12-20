@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string.h>
+
 #include "../Obj/Artist.h"
 
 class DoubleLinckedList
@@ -52,6 +53,8 @@ public:
     void getArtists();
     void graph();
     Artist* getArtist(string name_);
+    void getTop5();
+    void graphTop();
 
 
 private:
@@ -239,8 +242,8 @@ void DoubleLinckedList::graph()
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
-    //--------------------------------------------------- Metodo getArtist ------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------- Metodo getArtist --------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
 Artist *DoubleLinckedList::getArtist(string name_)
 {
     Nodo* aux = first;
@@ -252,6 +255,191 @@ Artist *DoubleLinckedList::getArtist(string name_)
         aux = aux->getNext();
     }
     return 0;
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------- Metodo getArtist --------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+void DoubleLinckedList::getTop5()
+{
+    Nodo* aux = first;
+    Artist* top1 = 0;
+    Artist* top2 = 0;
+    Artist* top3 = 0;
+    Artist* top4 = 0;
+    Artist* top5 = 0;
+
+
+    while (aux != 0)
+    {
+        if (top1 == 0) 
+        {
+            top1 = aux->getDato();
+        }
+        else if (top2 == 0)
+        {
+            top2 = aux->getDato();
+            if (aux->getDato()->getRate() > top1->getRate())
+            {
+                top2 = top1;
+                top1 = aux->getDato();
+            }
+        }
+        else if (top3 == 0)
+        {
+            top3 = aux->getDato();
+            if (aux->getDato()->getRate() > top2->getRate())
+            {
+                top3 = top2;
+                top2 = aux->getDato();
+                if (aux->getDato()->getRate() > top1->getRate())
+                {
+                    top2 = top1;
+                    top1 = aux->getDato();
+                }
+            }
+        }
+        else if (top4 == 0)
+        {
+            top4 = aux->getDato();
+            if (aux->getDato()->getRate() > top3->getRate())
+            {
+                top4 = top3;
+                top3 = aux->getDato();
+                if (aux->getDato()->getRate() > top2->getRate())
+                {
+                    top3 = top2;
+                    top2 = aux->getDato();
+                    if (aux->getDato()->getRate() > top1->getRate())
+                    {
+                        top2 = top1;
+                        top1 = aux->getDato();
+                    }
+                }
+            }
+        }
+        else if (top5 == 0)
+        {
+            top5 = aux->getDato();
+            if (aux->getDato()->getRate() > top4->getRate())
+            {
+                top5 = top4;
+                top4 = aux->getDato();
+                if (aux->getDato()->getRate() > top3->getRate())
+                {
+                    top4 = top3;
+                    top3 = aux->getDato();
+                    if (aux->getDato()->getRate() > top2->getRate())
+                    {
+                        top3 = top2;
+                        top2 = aux->getDato();
+                        if (aux->getDato()->getRate() > top1->getRate())
+                        {
+                            top2 = top1;
+                            top1 = aux->getDato();
+                        }
+                    }
+                }
+            }
+        }
+        else if (aux->getDato()->getRate() > top5->getRate())
+        {
+            top5 = aux->getDato();
+            if (aux->getDato()->getRate() > top4->getRate())
+            {
+                top5 = top4;
+                top4 = aux->getDato();
+                if (aux->getDato()->getRate() > top3->getRate())
+                {
+                    top4 = top3;
+                    top3 = aux->getDato();
+                    if (aux->getDato()->getRate() > top2->getRate())
+                    {
+                        top3 = top2;
+                        top2 = aux->getDato();
+                        if (aux->getDato()->getRate() > top1->getRate())
+                        {
+                            top2 = top1;
+                            top1 = aux->getDato();
+                        }
+                    }
+                }
+            }
+        }
+        aux = aux->getNext();
+    }
+
+    DoubleLinckedList* top = new DoubleLinckedList();
+    if (top1 != 0) 
+    {
+        top->addLast(top1);
+
+    }
+    if (top2 != 0)
+    {
+        top->addLast(top2);
+
+    }
+    if (top3 != 0)
+    {
+        top->addLast(top3);
+
+    }
+    if (top4 != 0)
+    {
+        top->addLast(top4);
+
+    }
+    if (top5 != 0)
+    {
+        top->addLast(top5);
+
+    }
+
+    top->graphTop();
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------- Metodo graphTop ------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------  
+void DoubleLinckedList::graphTop()
+{
+    Nodo* aux = first;
+    int contador = 0;
+    ofstream stream;
+    stream.open("C:\\EDDProyect\\listaArtistas.dot", ios::out);
+
+    if (stream.fail())
+    {
+        cout << "Existe un problema con el archivo." << endl;
+    }
+
+    stream << "digraph { " << endl;
+    stream << "rankdir = TB; " << endl;
+    stream << "node [shape = rectangle, width = 1, height = 1];" << endl;
+    while (aux != 0)
+    {
+        stream << "node" << contador << " [label=\"" <<"---- "<<contador+1 << " ----\nNombre:  "<<aux->getDato()->getName()<< "\nRate:  " << aux->getDato()->getRate() <<"\"];" << endl;
+        aux = aux->getNext();
+        contador++;
+    }
+    aux = first;
+    contador = 0;
+    while (aux->getNext() != 0)
+    {
+        stream << "node" << contador << " -> " << "node" << contador + 1 << " ;" << endl;
+        aux = aux->getNext();
+        contador++;
+    }
+    
+    stream << "}";
+
+    stream.close();
+
+    system("dot -Tpng  C:\\EDDProyect\\listaArtistas.dot -o C:\\EDDProyect\\listaArtistas.png");
+    system("start C:\\EDDProyect\\listaArtistas.png");
+
 }
 
 //-----------------------------------------------------------------------------------------------------------------------

@@ -2,6 +2,7 @@
 #include <iostream>
 #include "../Obj/Album.h"
 
+
 using namespace std;
 
 class Nodo
@@ -369,12 +370,12 @@ public:
 
 		stream << "digraph { " << endl;
 		stream << "node [shape = rectangle, width = 1, height = 1];" << endl;
-		stream << "root [label = \"Raiz\", fillcolor = fireBrick1, group = 1];" << endl;
+		stream << "root [label = \"Raiz\", style=filled, fillcolor = fireBrick1, group = 1];" << endl;
 
 
 		while (auxY != 0)
 		{
-			stream << "headY" << contador << " [label = \"" << auxY->getName() << "\", fillcolor = lightskyblue, group = 1];" << endl;
+			stream << "headY" << contador << " [label = \"" << auxY->getName() << "\",style=filled, fillcolor = lightskyblue, group = 1];" << endl;
 			contador++;
 			auxY = auxY->getNext();
 		}
@@ -383,7 +384,7 @@ public:
 		contador = 0;
 		while (auxX != 0)
 		{
-			stream << "headX" << contador << " [label = \"" << auxX->getName() << "\", fillcolor = lightskyblue, group = " << grupo << " ];" << endl;
+			stream << "headX" << contador << " [label = \"" << auxX->getName() << "\",style=filled, fillcolor = lightskyblue, group = " << grupo << " ];" << endl;
 			aux = auxX->getColumn();
 			while (aux != 0)
 			{
@@ -517,8 +518,10 @@ public:
 	void add(string y_, int x_, Album* data_)
 	{
 		bool flag = 1;
-		HeaderY* auxY = getNodeY(y_);
-		HeaderX* auxX = getNodeX(x_);
+		HeaderY* auxY = 0;
+		HeaderX* auxX = 0;
+		auxY = getNodeY(y_);
+		auxX = getNodeX(x_);
 		int indexY = auxY->getIndex();
 		Nodo* dato = new Nodo(data_, auxX->getName(), indexY);
 
@@ -660,6 +663,186 @@ public:
 
 	}
 
+//-----------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------ Metodo graphTop -----------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+	void getTop()
+	{
+
+		Album* top1 = 0;
+		Album* top2 = 0;
+		Album* top3 = 0;
+		Album* top4 = 0;
+		Album* top5 = 0;
+		HeaderX* head = x;
+		while (head != NULL)
+		{
+			Nodo* aux = head->getColumn();
+			while (aux != NULL)
+			{
+				Nodo* aux2 = aux;
+				while (aux2 != NULL)
+				{
+
+					if (top1 == 0)
+					{
+						top1 = aux2->getAlbum();
+					}
+					else if (top2 == 0)
+					{
+						top2 = aux2->getAlbum();
+						if (aux2->getAlbum()->getRate() > top1->getRate())
+						{
+							top2 = top1;
+							top1 = aux2->getAlbum();
+						}
+					}
+					else if (top3 == 0)
+					{
+						top3 = aux2->getAlbum();
+						if (aux2->getAlbum()->getRate() > top2->getRate())
+						{
+							top3 = top2;
+							top2 = aux2->getAlbum();
+							if (aux2->getAlbum()->getRate() > top1->getRate())
+							{
+								top2 = top1;
+								top1 = aux2->getAlbum();
+							}
+						}
+					}
+					else if (top4 == 0)
+					{
+						top4 = aux2->getAlbum();
+						if (aux2->getAlbum()->getRate() > top3->getRate())
+						{
+							top4 = top3;
+							top3 = aux2->getAlbum();
+							if (aux2->getAlbum()->getRate() > top2->getRate())
+							{
+								top3 = top2;
+								top2 = aux2->getAlbum();
+								if (aux2->getAlbum()->getRate() > top1->getRate())
+								{
+									top2 = top1;
+									top1 = aux2->getAlbum();
+								}
+							}
+						}
+					}
+					else if (top5 == 0)
+					{
+						top5 = aux2->getAlbum();
+						if (aux2->getAlbum()->getRate() > top4->getRate())
+						{
+							top5 = top4;
+							top4 = aux2->getAlbum();
+							if (aux2->getAlbum()->getRate() > top3->getRate())
+							{
+								top4 = top3;
+								top3 = aux2->getAlbum();
+								if (aux2->getAlbum()->getRate() > top2->getRate())
+								{
+									top3 = top2;
+									top2 = aux2->getAlbum();
+									if (aux2->getAlbum()->getRate() > top1->getRate())
+									{
+										top2 = top1;
+										top1 = aux2->getAlbum();
+									}
+								}
+							}
+						}
+					}
+					else if (aux2->getAlbum()->getRate() > top5->getRate())
+					{
+						top5 = aux2->getAlbum();
+						if (aux2->getAlbum()->getRate() > top4->getRate())
+						{
+							top5 = top4;
+							top4 = aux2->getAlbum();
+							if (aux2->getAlbum()->getRate() > top3->getRate())
+							{
+								top4 = top3;
+								top3 = aux2->getAlbum();
+								if (aux2->getAlbum()->getRate() > top2->getRate())
+								{
+									top3 = top2;
+									top2 = aux2->getAlbum();
+									if (aux2->getAlbum()->getRate() > top1->getRate())
+									{
+										top2 = top1;
+										top1 = aux2->getAlbum();
+									}
+								}
+							}
+						}
+					}
+					aux2 = aux2->getNext();
+				}
+				aux = aux->getButtom();
+			}
+			head = head->getNext();
+		}
+
+
+		int contador = 0;
+
+		ofstream stream;
+		stream.open("C:\\EDDProyect\\listaArtistas.dot", ios::out);
+
+		if (stream.fail())
+		{
+			cout << "Existe un problema con el archivo." << endl;
+		}
+
+		stream << "digraph { " << endl;
+		stream << "rankdir = TB; " << endl;
+		stream << "node [shape = rectangle, width = 1, height = 1];" << endl;
+		if (top1 != 0)
+		{
+			stream << "node" << contador << " [label=\"" << "---- " << contador + 1 << " ----\nNombre:  " << top1->getName() << "\nRate:  " << top1->getRate() << "\"];" << endl;
+			contador++;
+		}
+		if (top2 != 0)
+		{
+			stream << "node" << contador << " [label=\"" << "---- " << contador + 1 << " ----\nNombre:  " << top2->getName() << "\nRate:  " << top2->getRate() << "\"];" << endl;
+			contador++;
+		}
+		if (top3 != 0)
+		{
+			stream << "node" << contador << " [label=\"" << "---- " << contador + 1 << " ----\nNombre:  " << top3->getName() << "\nRate:  " << top3->getRate() << "\"];" << endl;
+			contador++;
+		}
+		if (top4 != 0)
+		{
+			stream << "node" << contador << " [label=\"" << "---- " << contador + 1 << " ----\nNombre:  " << top4->getName() << "\nRate:  " << top4->getRate() << "\"];" << endl;
+			contador++;
+		}
+		if (top5 != 0)
+		{
+			stream << "node" << contador << " [label=\"" << "---- " << contador + 1 << " ----\nNombre:  " << top5->getName() << "\nRate:  " << top5->getRate() << "\"];" << endl;
+			contador++;
+		}
+
+
+		
+		for (int i = 0; i < contador-1; i++) 
+		{
+			stream << "node" << i << " -> " << "node" << i + 1 << " ;" << endl;
+		}
+		
+		
+
+		stream << "}";
+
+		stream.close();
+
+		system("dot -Tpng  C:\\EDDProyect\\listaArtistas.dot -o C:\\EDDProyect\\listaArtistas.png");
+		system("start C:\\EDDProyect\\listaArtistas.png");
+
+
+	}
 };
 
 

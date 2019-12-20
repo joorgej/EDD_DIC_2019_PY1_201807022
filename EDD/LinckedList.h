@@ -87,7 +87,7 @@ public:
         if (index >= 0 && index <= this->size)
         {
             if (index == 0) { this->addFirst(data);  }
-            if (index == this->size) { this->addLast(data);  }
+            else if (index == this->size) { this->addLast(data);  }
             else 
             {
                 Nodo* aux = this->first;
@@ -164,7 +164,7 @@ public:
         stream << "node [shape = rectangle, width = 1, height = 1];" << endl;
         while (aux != 0) 
         {
-            stream << "node" << contador << " [label=\"" << aux->getDato()->getName() << "\"];" << endl;
+            stream << "node" << contador << " [label=\"" << aux->getDato()->getName() << "\",style=filled];" << endl;
             aux = aux->getNext();
             contador++;
         }
@@ -194,7 +194,8 @@ public:
 
         while (aux != 0) 
         {
-            cout << contador << ")  " << aux->getDato()->getName();
+            contador++;
+            cout << contador << ")  " << aux->getDato()->getName()<<endl;
             aux = aux->getNext();
         }
     }
@@ -213,6 +214,36 @@ public:
             aux = aux->getNext();
         }
         return 0;
+    }
+    //-----------------------------------------------------------------------------------------------------------------------
+    //---------------------------------------------------- Metodo add -------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------
+    void add(Song* data) {
+        if (isEmpty())
+        {
+            addFirst(data);
+        }
+        else
+        {
+            int contador = 0;
+            Nodo* aux = first;
+            while (aux != 0)
+            {
+                if (_strcmpi(data->getName().c_str(), aux->getDato()->getName().c_str()) < 0)
+                {
+                    addAt(data, contador);
+                    break;
+                }
+                contador++;
+                aux = aux->getNext();
+            }
+            if (contador == getSize())
+            {
+                addLast(data);
+            }
+
+        }
+
     }
 };
 
