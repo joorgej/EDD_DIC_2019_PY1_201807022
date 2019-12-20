@@ -25,6 +25,7 @@ class DoubleLinckedList
         void setNext(Nodo* n) { next = n; }
         void setBefore(Nodo* n) { before = n; }
         Artist* getDato() { return dato; }
+        
     private:
         Nodo* next;
         Nodo* before;
@@ -49,6 +50,8 @@ public:
     void add(Artist* data);
     Artist* getElementAt(int index);
     void getArtists();
+    void graph();
+    Artist* getArtist(string name_);
 
 
 private:
@@ -146,7 +149,7 @@ Artist* DoubleLinckedList::getElementAt(int index)
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
-//------------------------------------------------- Metodo getElementAt -------------------------------------------------
+//------------------------------------------------------ Metodo add -----------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
 void DoubleLinckedList::add(Artist* data)
 {
@@ -187,6 +190,68 @@ void DoubleLinckedList::getArtists()
         cout << contador << ")  " << aux->getDato()->getName()<<endl;
         aux = aux->getNext();
     }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------- Metodo graph ------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------  
+void DoubleLinckedList::graph()
+{
+    Nodo* aux = first;
+    int contador = 0;
+    ofstream stream;
+    stream.open("C:\\EDDProyect\\listaArtistas.dot", ios::out);
+
+    if (stream.fail())
+    {
+        cout << "Existe un problema con el archivo." << endl;
+    }
+
+    stream << "digraph { " << endl;
+    stream << "rankdir = LR; " << endl;
+    stream << "node [shape = rectangle, width = 1, height = 1];" << endl;
+    while (aux != 0)
+    {
+        stream << "node" << contador << " [label=\"" << aux->getDato()->getName() << "\"];" << endl;
+        aux = aux->getNext();
+        contador++;
+    }
+    aux = first;
+    contador = 0;
+    while (aux->getNext() != 0)
+    {
+        stream << "node" << contador << " -> " << "node" << contador + 1 << " ;" << endl;
+        aux = aux->getNext();
+        contador++;
+    }
+    while (aux->getBefore() != 0)
+    {
+        stream << "node" << contador << " -> " << "node" << contador - 1 << " ;" << endl;
+        aux = aux->getBefore();
+        contador--;
+    }
+    stream << "}";
+
+    stream.close();
+
+    system("dot -Tpng  C:\\EDDProyect\\listaArtistas.dot -o C:\\EDDProyect\\listaArtistas.png");
+    system("start C:\\EDDProyect\\listaArtistas.png");
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------- Metodo getArtist ------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------
+Artist *DoubleLinckedList::getArtist(string name_)
+{
+    Nodo* aux = first;
+    int contador = 0;
+
+    while (aux != 0)
+    {
+        if(aux->getDato()->getName().compare(name_)==0)return aux->getDato();
+        aux = aux->getNext();
+    }
+    return 0;
 }
 
 //-----------------------------------------------------------------------------------------------------------------------

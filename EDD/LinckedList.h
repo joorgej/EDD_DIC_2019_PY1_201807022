@@ -1,4 +1,5 @@
 #pragma once
+#include <fstream>
 #include "../Obj/Song.h"
 
 class LinckedList
@@ -143,7 +144,76 @@ public:
         }
         return 0;
     }
+//-----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------- Metodo graph ------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------  
+    void graph()
+    {
+        Nodo* aux = first;
+        int contador = 0;
+        ofstream stream;
+        stream.open("C:\\EDDProyect\\listasimple.dot", ios::out);
 
+        if (stream.fail())
+        {
+            cout << "Existe un problema con el archivo."<<endl;
+        }
+
+        stream << "digraph { " << endl;
+        stream << "rankdir = LR; " << endl;
+        stream << "node [shape = rectangle, width = 1, height = 1];" << endl;
+        while (aux != 0) 
+        {
+            stream << "node" << contador << " [label=\"" << aux->getDato()->getName() << "\"];" << endl;
+            aux = aux->getNext();
+            contador++;
+        }
+        aux = first;
+        contador = 0;
+        while (aux->getNext() != 0)
+        {
+            stream << "node" << contador << " -> " << "node" << contador + 1 << " ;" << endl;
+            aux = aux->getNext();
+            contador++;
+        }
+        stream << "}";
+
+        stream.close();
+
+        system("dot -Tpng  C:\\EDDProyect\\listasimple.dot -o C:\\EDDProyect\\listasimple.png");
+        system("start C:\\EDDProyect\\listasimple.png");
+        
+    }
+    //-----------------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------- Metodo getSongs -----------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------
+    void getSongs() 
+    {
+        Nodo* aux = first;
+        int contador = 0;
+
+        while (aux != 0) 
+        {
+            cout << contador << ")  " << aux->getDato()->getName();
+            aux = aux->getNext();
+        }
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------- Metodo getSong -----------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------
+    Song* getSong(string name_)
+    {
+        Nodo* aux = first;
+        int contador = 0;
+
+        while (aux != 0)
+        {
+            if (aux->getDato()->getName().compare(name_) == 0)return aux->getDato();
+            aux = aux->getNext();
+        }
+        return 0;
+    }
 };
 
 /*

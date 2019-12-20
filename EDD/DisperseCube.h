@@ -349,13 +349,164 @@ public:
 	}
 
 	
-//-----------------------------------------------------------------------------------------------------------------------
-//------------------------------------------------ Metodo graph ---------------------------------------------------------
-//-----------------------------------------------------------------------------------------------------------------------
-	string graph()
+	//-----------------------------------------------------------------------------------------------------------------------
+	//--------------------------------------------------- Metodo graph ------------------------------------------------------
+	//-----------------------------------------------------------------------------------------------------------------------  
+	void graph()
 	{
+		HeaderX* auxX = x;
+		HeaderY* auxY = y;
+		Nodo* aux = 0;
+		int grupo = 2;
+		int contador = 0;
+		ofstream stream;
+		stream.open("C:\\EDDProyect\\cuboAlbums.dot", ios::out);
+
+		if (stream.fail())
+		{
+			cout << "Existe un problema con el archivo." << endl;
+		}
+
+		stream << "digraph { " << endl;
+		stream << "node [shape = rectangle, width = 1, height = 1];" << endl;
+		stream << "root [label = \"Raiz\", fillcolor = fireBrick1, group = 1];" << endl;
+
+
+		while (auxY != 0)
+		{
+			stream << "headY" << contador << " [label = \"" << auxY->getName() << "\", fillcolor = lightskyblue, group = 1];" << endl;
+			contador++;
+			auxY = auxY->getNext();
+		}
+
+
+		contador = 0;
+		while (auxX != 0)
+		{
+			stream << "headX" << contador << " [label = \"" << auxX->getName() << "\", fillcolor = lightskyblue, group = " << grupo << " ];" << endl;
+			aux = auxX->getColumn();
+			while (aux != 0)
+			{
+				Nodo* aux2 = aux->getNext();
+				stream << aux->getX() << aux->getY() << " [label = \"" << aux->getAlbum()->getName();
+				while (aux2 != 0)
+				{
+					stream << " | " << aux2->getAlbum()->getName();
+					aux2 = aux2->getNext();
+				}
+				stream << "\", group = " << grupo << " ];" << endl;
+				aux = aux->getButtom();
+			}
+
+			contador++;
+			grupo++;
+			auxX = auxX->getNext();
+		}
+
+		stream << "{ rank = same; root;";
+		contador = 0;
+		auxX = x;
+		while (auxX != 0)
+		{
+			stream << "headX" << contador << ";";
+			auxX = auxX->getNext();
+			contador++;
+		}
+		stream << "}" << endl;
+
+		if (x != 0 && y != 0)
+		{
+			stream << "root -> headX0;" << endl;
+			stream << "root -> headY0;" << endl;
+		}
+
+		auxY = y;
+		contador = 0;
+		while (auxY->getNext() != 0)
+		{
+			stream << "headY" << contador << " -> " << "headY" << contador + 1 << " ;" << endl;
+			auxY = auxY->getNext();
+			contador++;
+		}
+		while (auxY->getBefore() != 0)
+		{
+			stream << "headY" << contador << " -> " << "headY" << contador - 1 << " ;" << endl;
+			auxY = auxY->getBefore();
+			contador--;
+		}
+		
+		
+		auxX = x;
+		contador = 0;
+		while (auxX->getNext() != 0)
+		{
+			stream << "headX" << contador << " -> " << "headX" << contador + 1 << " ;" << endl;
+			auxX = auxX->getNext();
+			contador++;
+		}
+		while (auxX->getBefore() != 0)
+		{
+			stream << "headX" << contador << " -> " << "headX" << contador - 1 << " ;" << endl;
+			auxX = auxX->getBefore();
+			contador--;
+		}
+
+
+		contador = 0;
+		auxY = y;
+		while (auxY != 0)
+		{
+			aux = auxY->getRow();
+			stream <<"{ rank = same; "<< "headY" << contador<< "; ";
+			while (aux != 0)
+			{
+				stream << aux->getX() <<aux->getY()<<";" ;
+				aux = aux->getRight();
+			}
+			stream << "}"<<endl;
+			contador++;
+			auxY = auxY->getNext();
+		}
+
+		contador = 0;
+		auxX = x;
+		while (auxX != 0)
+		{
+			aux = auxX->getColumn();
+			stream << "headX" << contador << " -> " << aux->getX() << aux->getY() << ";"<<endl;
+			while (aux->getButtom() != 0)
+			{
+				stream << aux->getX() << aux->getY() << " -> " << aux->getButtom()->getX() << aux->getButtom()->getY() << "[dir = both];" << endl;
+				aux = aux->getButtom();
+			}
+			contador++;
+			auxX = auxX->getNext();
+		}
+
+		contador = 0;
+		auxY = y;
+		while (auxY != 0)
+		{
+			aux = auxY->getRow();
+			stream << "headY" << contador << " -> " << aux->getX() << aux->getY() << ";"<<endl;
+			while (aux->getRight() != 0)
+			{
+				stream << aux->getX() << aux->getY() << " -> " << aux->getRight()->getX() << aux->getRight()->getY() << "[dir = both];"<<endl;
+				aux = aux->getRight();
+			}
+			contador++;
+			auxY = auxY->getNext();
+		}
+		
 		
 
+
+		stream << "}";
+
+		stream.close();
+
+		system("dot -Tpng  C:\\EDDProyect\\cuboAlbums.dot -o C:\\EDDProyect\\cuboAlbums.png");
+		system("start C:\\EDDProyect\\cuboAlbums.png");
 
 	}
 

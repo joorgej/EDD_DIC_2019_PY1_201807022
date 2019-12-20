@@ -1,7 +1,7 @@
-#ifndef BINARITREE_H_INCLUDED
-#define BINARITREE_H_INCLUDED
 
 #include <iostream>
+#include <fstream>
+#include <string.h>
 #include "../Obj/Playlist.h"
 
 using namespace std;
@@ -10,7 +10,7 @@ class BinariTree
 {
     class Nodo {
     public:
-        Nodo(T x):left(0), right(0), dato(x) {}
+        Nodo(Playlist* x):left(0), right(0), dato(x) {}
 
         ~Nodo() 
         {
@@ -20,22 +20,22 @@ class BinariTree
         Nodo* getRight() { return right; }
         void setLeft(Nodo* n) { left = n; }
         void setRight(Nodo* n) { right = n; }
-        T getDato() { return dato; }
+        Playlist* getDato() { return dato; }
     private:
         Nodo* left;
-        Nodo* right
+        Nodo* right;
         Playlist* dato;
     };
 public:
-    ListaDoble()
+    BinariTree()
     {
         root = 0;
     }
 
-    void add(T data);
-    void addR(T data, Nodo* aux)
-    string graph();
-    T getElement(string name);
+    void add(Playlist* data);
+    void addR(Playlist* data, Nodo* aux);
+    void graph();
+    Playlist getElement(string name);
 
 
 private:
@@ -45,10 +45,9 @@ private:
 
 
 //-----------------------------------------------------------------------------------------------------------------------
-//------------------------------------------------- Metodo addAt --------------------------------------------------------
+//------------------------------------------------- Metodo add --------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
-template<class T>
-void BinariTree<T>::add(T data)
+void BinariTree::add(Playlist* data)
 {
     Nodo* n = new Nodo(data);
     if (this->isEmpty())
@@ -57,16 +56,34 @@ void BinariTree<T>::add(T data)
     }
     else
     {
-        
+        addR(data,root);
     }
 }
 //-----------------------------------------------------------------------------------------------------------------------
-//------------------------------------------------- Metodo addAt --------------------------------------------------------
+//------------------------------------------------- Metodo addR --------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
-template<class T>
-void BinariTree<T>::addR(T data, Nodo* aux)
+void BinariTree::addR(Playlist* data, Nodo* aux)
 {
-    if(aux->getDato)
+    if (_strcmpi(data->getName().c_str(), aux->getDato()->getName().c_str()) < 0)
+    {
+        if (aux->getLeft() == 0)aux->setLeft(new Nodo(data));
+        else addR(data, aux->getLeft());
+    }
+    else
+    {
+        if (aux->getRight() == 0)aux->setRight(new Nodo(data));
+        else addR(data, aux->getRight());
+        
+    }    
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------- Metodo graph --------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+
+void BinariTree::graph()
+{
+    
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
@@ -75,5 +92,3 @@ void BinariTree<T>::addR(T data, Nodo* aux)
 
 
 
-
-#endif // LINCKEDLIST_H_INCLUDED
