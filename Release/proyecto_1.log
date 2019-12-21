@@ -6,8 +6,8 @@ C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\proyecto_1.cpp(52,35): warning
 C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\proyecto_1.cpp(57,55): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
 C:\Users\Jorge\source\repos\proyecto_1\proyecto_1\proyecto_1.cpp(340,27): warning C4018: '<': no coinciden signed/unsigned
   Generando código
-  4 of 492 functions ( 0.8%) were compiled, the rest were copied from previous compilation.
+  8 of 492 functions ( 1.6%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    5 functions had inline decision re-evaluated but remain unchanged
+    3 functions had inline decision re-evaluated but remain unchanged
   Generación de código finalizada
   proyecto_1.vcxproj -> C:\Users\Jorge\source\repos\proyecto_1\Release\proyecto_1.exe

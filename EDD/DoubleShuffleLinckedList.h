@@ -214,10 +214,12 @@ void DoubleShuffleLinckedList::change(int i, int j)
 
 void DoubleShuffleLinckedList::shuffle()
 {
-    int i = rand() % size - 1;
-    int j = rand() % size - 1;
+    int i = 0;
+    int j = 0;
     for (int k = 0; k < size; k++)
     {
+        i = rand() % (size - 1);
+        j = rand() % (size - 1);
         change(i,j);
     }
 }
