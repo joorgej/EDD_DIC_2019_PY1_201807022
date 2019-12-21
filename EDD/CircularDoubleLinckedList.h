@@ -49,7 +49,9 @@ public:
     void addLast(Song *data);
     void addAt(Song *data, int index);
     Song getElementAt(int index);
-    string graph();
+    void graph();
+    void reproducir();
+    void reproducirR();
 
 
 
@@ -63,7 +65,7 @@ private:
 
 
 //-----------------------------------------------------------------------------------------------------------------------
-//------------------------------------------------- Metodo addAt --------------------------------------------------------
+//------------------------------------------------ Metodo addFirst ------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
 void CircularDoubleLinckedList::addFirst(Song *data)
 {
@@ -86,6 +88,7 @@ void CircularDoubleLinckedList::addFirst(Song *data)
         this->first = n;
         this->size++;
     }
+    reproduccion = first;
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
@@ -145,7 +148,7 @@ Song CircularDoubleLinckedList::getElementAt(int index)
     {
         Nodo* iterador = this->first;
         int x = 0;
-        while (iterador != NULL)
+        while (iterador != 0)
         {
             if (index == x) { return *iterador->getDato(); }
             iterador = iterador->getNext();
@@ -153,6 +156,111 @@ Song CircularDoubleLinckedList::getElementAt(int index)
         }
     }
     
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------- Metodo reproducir -------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+void CircularDoubleLinckedList::reproducir()
+{
+    graph();
+    reproducirR();
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------- Metodo reproducir -------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+void CircularDoubleLinckedList::reproducirR()
+{
+
+    cout << "Elija una opcion. "<<endl;
+    cout << endl;
+    cout << "1)  Cancion Anterior." << endl;
+    cout << "2)  Cancion Siguiente." << endl;
+    cout << endl;
+    cout << "0) <- Regresar" << endl;
+    cout << endl << endl;
+    cout << "Ingrese la opcion elegida:   ";
+    
+
+    int i = 0;
+    cin >> i;
+    cout << endl << endl << endl;
+    if (i == 2)
+    {
+        reproduccion = reproduccion->getNext();
+        graph();
+        reproducirR();
+    }
+    else if (i == 1)
+    {
+        reproduccion = reproduccion->getBefore();
+        graph();
+        reproducirR();
+    }
+    else if (i == 0) {
+        return;
+    }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------- Metodo graph -----------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+void CircularDoubleLinckedList::graph()
+{
+    Nodo* aux = first;
+    int contador = 0;
+    ofstream stream;
+    stream.open("C:\\EDDProyect\\circlular.dot", ios::out);
+
+    if (stream.fail())
+    {
+        cout << "Existe un problema con el archivo." << endl;
+    }
+
+    stream << "digraph { " << endl;
+    stream << "rankdir = LR; " << endl;
+    stream << "node [shape = rectangle, width = 1, height = 1];" << endl;
+    for (int i = 0; i < size; i++)
+    {
+        if(aux->getDato()->getName().compare(reproduccion->getDato()->getName())==0)
+        {
+            stream << "node" << contador << " [label=\"" << aux->getDato()->getName() << "\", style=filled, fillcolor = fireBrick1];" << endl;
+        }
+        else
+        {
+            stream << "node" << contador << " [label=\"" << aux->getDato()->getName() << "\"];" << endl;
+        }
+        aux = aux->getNext();
+        contador++;
+    }
+
+    stream << "node" << size - 1 << " -> node0 ;" << endl;
+    aux = first;
+    contador = 0;
+    for(int i = 0; i<size-1; i++)
+    {
+        stream << "node" << contador << " -> " << "node" << contador + 1 << " ;" << endl;
+        aux = aux->getNext();
+        contador++;
+    }
+    for (int i = 0; i < size-1; i++)
+    {
+        stream << "node" << contador << " -> " << "node" << contador - 1 << " ;" << endl;
+        aux = aux->getBefore();
+        contador--;
+    }
+
+    stream << "node0 -> node" << size - 1 << ";"<<endl;
+   
+
+    stream << "}";
+
+    stream.close();
+
+    system("dot -Tpng  C:\\EDDProyect\\circlular.dot -o C:\\EDDProyect\\circlular.png");
+    system("start C:\\EDDProyect\\circlular.png");
+
 }
 //-----------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------

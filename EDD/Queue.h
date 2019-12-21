@@ -23,6 +23,11 @@ class Queue
         Song* dato;
     };
 
+private:
+    bool isEmpty() { return size == 0; }
+    int size;
+    Nodo* first;
+    Nodo* last;
 
 public:
 
@@ -34,13 +39,18 @@ public:
     }
 
     int getSize() { return size; }
+    void enqueue(Song* song_) { addLast(song_); }
+    Song* dequeue()
+    {
+        Song* out = getElementAt(0);
+        Nodo* aux = first;
+        first = first->getNext();
+        delete(aux);
+        size--;
+        return out;
+    }
 
 
-private:
-    bool isEmpty() { return size == 0; }
-    int size;
-    Nodo* first;
-    Nodo* last;
 
     //-----------------------------------------------------------------------------------------------------------------------
     //------------------------------------------------- Metodo addFirst -----------------------------------------------------
@@ -144,6 +154,67 @@ private:
             x++;
         }
         return 0;
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------- Metodo reproducir ---------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------  
+    void reproducir()
+    {
+        if (size <= 0) { return; }
+
+
+        graph(dequeue());
+        _sleep(7000);
+
+        reproducir();
+
+
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------
+    //---------------------------------------------------- Metodo graph -----------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------  
+    void graph(Song* song_)
+    {
+        Nodo* aux = first;
+        int contador = 0;
+        ofstream stream;
+        stream.open("C:\\EDDProyect\\listasimple.dot", ios::out);
+
+        if (stream.fail())
+        {
+            cout << "Existe un problema con el archivo." << endl;
+        }
+
+        stream << "digraph { " << endl;
+        stream << "rankdir = LR; " << endl;
+        stream << "node [shape = rectangle, width = 1, height = 1];" << endl;
+
+        stream << "poped" << " [label=\"" << song_->getName() << "\",style=filled, fillcolor = fireBrick1 ];" << endl;
+        while (aux != 0)
+        {
+            stream << "node" << contador << " [label=\"" << aux->getDato()->getName() << "\"];" << endl;
+            aux = aux->getNext();
+            contador++;
+        }
+        aux = first;
+        contador = 0;
+        if (aux != 0) {
+            while (aux->getNext() != 0)
+            {
+                stream << "node" << contador << " -> " << "node" << contador + 1 << " ;" << endl;
+                aux = aux->getNext();
+                contador++;
+            }
+        }
+        stream << "}";
+
+        stream.close();
+
+        system("dot -Tpng  C:\\EDDProyect\\listasimple.dot -o C:\\EDDProyect\\listasimple.png");
+        system("start C:\\EDDProyect\\listasimple.png");
+
     }
 
 };

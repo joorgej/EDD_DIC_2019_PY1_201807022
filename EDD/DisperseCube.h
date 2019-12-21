@@ -392,7 +392,7 @@ public:
 				stream << aux->getX() << aux->getY() << " [label = \"" << aux->getAlbum()->getName();
 				while (aux2 != 0)
 				{
-					stream << " | " << aux2->getAlbum()->getName();
+					stream << "\n ------------------------------- \n " << aux2->getAlbum()->getName();
 					aux2 = aux2->getNext();
 				}
 				stream << "\", group = " << grupo << " ];" << endl;

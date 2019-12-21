@@ -224,6 +224,11 @@ public:
             Reportes();
             break;
 
+        case 4:
+            l->graphPlaylist();
+            Reportes();
+            break;
+
         case 6:
             l->graphTop5();
             Reportes();
@@ -246,7 +251,7 @@ public:
     void Playlists()
     {
         cout << "----------------------------------PLAYLISTS----------------------------------" << endl << endl;
-        cout << "Elije el reporte que deseas consultar." << endl;
+        cout << "Elije la opcion que desees realizar." << endl;
         cout << "1)  Reproducir playlist" << endl;
         cout << "2)  Cargar playlist" << endl;
         cout << endl;
@@ -260,7 +265,7 @@ public:
         switch (c)
         {
         case 1:
-            l->graphArtists();
+            PlaylistNav();
             Reportes();
             break;
 
@@ -277,6 +282,35 @@ public:
         default:
             cout << "Escoja una opcion valida" << endl << endl << endl << endl;
             Navegacion();
+            break;
+        }
+    }
+
+//-----------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------- PlaylistsNav -------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+    void PlaylistNav()
+    {
+        cout << "----------------------------------PLAYLISTS----------------------------------" << endl << endl;
+        cout << "Elije la playlist que desees reproducir." << endl;
+        l->printPlaylist();
+        cout << endl;
+        cout << "0)  <- Regresar" << endl;
+        cout << endl;
+        cout << endl;
+        cout << "Selecciona una opcion:  ";
+        int c = 0;
+        cin >> c;
+        cout << endl << endl << endl << endl;
+        switch (c)
+        {
+        case 0:
+            menuInicio();
+            break;
+
+        default:
+            l->getPlaylist(c);
+            Playlists();
             break;
         }
     }
@@ -313,19 +347,14 @@ public:
             bool exist= l->validarCancion(artist, album, year, month, song);
             if (exist) 
             {
-                
+                p->add(l->getSong(artist, album, year, month, song));
             }
             
         }
         l->addPlaylist(p);
-        l->addPlaylist(p);
         cout << "La playlist se cargo exitosamente" << endl << endl << endl << endl;
-        l->graphPlaylist();
     }
-    void seleccionarPlaylist()
-    {
 
-    }
     Artist* seleccionarArtista()
     {
         cout << "----------------------------------ARTISTAS----------------------------------" << endl << endl;

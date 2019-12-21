@@ -39,7 +39,7 @@ public:
     {
         first = 0;
         last = 0;
-        posicion = 0;
+        reproduccion = 0;
         size = 0;
     }
 
@@ -51,8 +51,11 @@ public:
     Song* getElementAt(int index);
     void getSong();
     void shuffle();
-    Song* getNext();
-    Song* getBefore();
+    void reproducir();
+    void reproducirR();
+    void graph();
+    void change(int i, int j);
+    void removeAt(int index);
 
 
 private:
@@ -60,7 +63,7 @@ private:
     int size;
     Nodo* first;
     Nodo* last;
-    Nodo* posicion;
+    Nodo* reproduccion;
 };
 
 
@@ -83,6 +86,7 @@ void DoubleShuffleLinckedList::addFirst(Song* data)
         this->first = n;
         this->size++;
     }
+    reproduccion = first;
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
@@ -194,6 +198,167 @@ void DoubleShuffleLinckedList::getSong()
     }
 }
 
+//-----------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------- Metodo change -----------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+
+void DoubleShuffleLinckedList::change(int i, int j)
+{
+    Song* aux = getElementAt(i);
+    removeAt(i);
+    addAt(aux, j);
+}
+//-----------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------- Metodo shuffle -----------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+
+void DoubleShuffleLinckedList::shuffle()
+{
+    int i = rand() % size - 1;
+    int j = rand() % size - 1;
+    for (int k = 0; k < size; k++)
+    {
+        change(i,j);
+    }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------- Metodo reproducir ---------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+void DoubleShuffleLinckedList::reproducir()
+{
+    shuffle();
+    graph();
+    reproducirR();
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------- Metodo reproducir -------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+void DoubleShuffleLinckedList::reproducirR()
+{
+
+    cout << "Elija una opcion. " << endl;
+    cout << endl;
+    cout << "1)  Cancion Anterior." << endl;
+    cout << "2)  Cancion Siguiente." << endl;
+    cout << endl;
+    cout << "0) <- Regresar" << endl;
+    cout << endl << endl;
+    cout << "Ingrese la opcion elegida:   ";
+
+
+    int i = 0;
+    cin >> i;
+    cout << endl << endl << endl;
+    if (i == 2 && reproduccion->getNext()!=0)
+    {
+        reproduccion = reproduccion->getNext();
+        graph();
+        reproducirR();
+    }
+    else if (i == 1 && reproduccion->getBefore() != 0)
+    {
+        reproduccion = reproduccion->getBefore();
+        graph();
+        reproducirR();
+    }
+    else {
+        return;
+    }
+}
+//-----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------- Metodo graph -----------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+void DoubleShuffleLinckedList::graph()
+{
+    Nodo* aux = first;
+    int contador = 0;
+    ofstream stream;
+    stream.open("C:\\EDDProyect\\listaArtistas.dot", ios::out);
+
+    if (stream.fail())
+    {
+        cout << "Existe un problema con el archivo." << endl;
+    }
+
+    stream << "digraph { " << endl;
+    stream << "rankdir = LR; " << endl;
+    stream << "node [shape = rectangle, width = 1, height = 1];" << endl;
+    while (aux != 0)
+    {
+        if (aux->getDato()->getName().compare(reproduccion->getDato()->getName())==0)
+        {
+            stream << "node" << contador << " [label=\"" << aux->getDato()->getName() << "\", style=filled, fillcolor = fireBrick1];" << endl;
+        }
+        else
+        {
+            stream << "node" << contador << " [label=\"" << aux->getDato()->getName() << "\"];" << endl;
+        }
+        aux = aux->getNext();
+        contador++;
+    }
+    aux = first;
+    contador = 0;
+    if (aux != 0) {
+        while (aux->getNext() != 0)
+        {
+            stream << "node" << contador << " -> " << "node" << contador + 1 << " ;" << endl;
+            aux = aux->getNext();
+            contador++;
+        }
+        while (aux->getBefore() != 0)
+        {
+            stream << "node" << contador << " -> " << "node" << contador - 1 << " ;" << endl;
+            aux = aux->getBefore();
+            contador--;
+        }
+    }
+
+    stream << "}";
+
+    stream.close();
+
+    system("dot -Tpng  C:\\EDDProyect\\listaArtistas.dot -o C:\\EDDProyect\\listaArtistas.png");
+    system("start C:\\EDDProyect\\listaArtistas.png");
+
+}
+//-----------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------Metodo remove_at -----------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
+void DoubleShuffleLinckedList::removeAt(int index)
+{
+    if (index >= 0 && index < size) 						                
+    {
+        if (index == 0)								                    
+        {
+            Nodo* aux = first; 							                
+            first = first->getNext(); 					                
+            first->setBefore(0); 						                
+            aux->setNext(0); 							               
+            aux->~Nodo(); 							                    
+        }
+        else if (index == size - 1) 						                
+        {
+            Nodo* aux = last;   						                
+            last = last->getBefore();					             
+            last->setNext(0); 							       
+            aux->setBefore(0); 							            
+            aux->~Nodo(); 							                  
+        }
+        else 									                      
+        {
+            Nodo* aux = this->first; 						           
+            for (int i = 0; i < index; i++) { aux = aux->getNext(); } 		
+            aux->getBefore()->setNext(aux->getNext()); 				    
+            aux->getNext()->setBefore(aux->getBefore()); 			    
+            aux->setBefore(0); 							              
+            aux->setNext(0); 							               
+            aux->~Nodo(); 							                   
+        }
+        size--; 								                      
+    }
+}
 //-----------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------

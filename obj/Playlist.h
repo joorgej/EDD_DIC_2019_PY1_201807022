@@ -37,5 +37,23 @@ public:
 		else if (type_.compare("Circular") == 0) return 3;
 	}
 	string getName() { return name; }
+	string getType() { return typeS; }
+
+
+	void add(Song* song_) 
+	{
+		if (type == 0)pila->push(song_);
+		else if (type == 1)cola->enqueue(song_);
+		else if (type == 2)shuffle->addLast(song_);
+		else if (type == 3)circular->addLast(song_);
+	}
+
+	void reproducir() 
+	{
+		if (type == 0)pila->reproducir();
+		else if (type == 1)cola->reproducir();
+		else if (type == 2)shuffle->reproducir();
+		else if (type == 3)circular->reproducir();
+	}
 
 };
